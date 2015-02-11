@@ -1,0 +1,27 @@
+{
+  "name": "zi",
+  "version": "1.0.0",
+  "description": "An import utility for Squiz Matrix",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshgillies/zi.git"
+  },
+  "keywords": [
+    "squiz",
+    "mysource",
+    "my",
+    "source",
+    "matrix",
+    "import"
+  ],
+  "author": "Josh Gillies <npm@joshgilli.es> (http://joshgilli.es/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joshgillies/zi/issues"
+  },
+  "homepage": "https://github.com/joshgillies/zi"
+}
