@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/joshgillies/zi/issues"
   },
-  "homepage": "https://github.com/joshgillies/zi"
+  "homepage": "https://github.com/joshgillies/zi",
+  "dependencies": {
+    "string-template": "^0.2.0"
+  }
 }
