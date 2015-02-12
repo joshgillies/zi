@@ -40,10 +40,14 @@ var LINKS = {
 
 function getActionId(type) {
   var args = Array.prototype.slice.call(arguments, 1);
-  var action = ACTIONS[HELPERS[type] || type];
+  var action = ACTIONS[useKey(type)];
   if (typeof action === 'object')
-    action = action[args.shift()];
+    action = action[useKey(args.shift())];
   return action.apply(null, args);
+}
+
+function useKey(key) {
+  return HELPERS[key] || key;
 }
 
 assert.equal(
