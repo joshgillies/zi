@@ -1,7 +1,7 @@
 var assert = require('assert');
 var format = require('string-template');
 
-function keyword(template, expected) {
+function actionId(template, expected) {
   return function formatter() {
     var args = Array.prototype.slice.call(arguments);
     expected = expected || 1;
@@ -12,24 +12,24 @@ function keyword(template, expected) {
 }
 
 var ATTRIBUTES = {
-  name: keyword('set_{0}_name'),
-  short_name: keyword('set_{0}_short_name'),
-  not_found_page_cache_globally: keyword('set_{0}_not_found_page_cache_globally'),
-  attributes: keyword('set_{0}_attributes')
+  name: actionId('set_{0}_name'),
+  short_name: actionId('set_{0}_short_name'),
+  not_found_page_cache_globally: actionId('set_{0}_not_found_page_cache_globally'),
+  attributes: actionId('set_{0}_attributes')
 };
 
 var ACTIONS = {
-  add_web_path: keyword('add_{0}_path'),
-  create_asset: keyword('create_{0}'),
-  create_link: keyword('link_notice_{0}_to_{1}', 2),
+  add_web_path: actionId('add_{0}_path'),
+  create_asset: actionId('create_{0}'),
+  create_link: actionId('link_notice_{0}_to_{1}', 2),
   set_attribute_value: ATTRIBUTES
 };
 
 var HELPERS = {
   cache_globally: 'not_found_page_cache_globally',
-  set_attribute: 'set_attribute_value'
+  set_attribute: 'set_attribute_value',
+  add_path: 'add_web_path'
 };
-
 
 var LINKS = {
   TYPE_1: 1,
