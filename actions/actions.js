@@ -13,7 +13,8 @@ var ACTIONS = {
   add_web_path: actionId('add_{0}_path'),
   create_asset: actionId('create_{0}'),
   create_link: actionId('link_notice_{0}_to_{1}', 2),
-  set_attribute_value: ATTRIBUTES
+  set_attribute_value: ATTRIBUTES,
+  set_permission: actionId('set_permission_{0}_{1}_{2}', 3)
 };
 
 var LINKS = {
@@ -85,6 +86,19 @@ function actionSetAttribute(opts) {
   };
 }
 
+function actionSetPermission(opts) {
+  var type = 'set_permission';
+
+  return {
+    action_id: getActionId.apply(null, [type, opts.assetId, opts.permission, opts.userId]),
+    action_type: type,
+    asset: opts.assetId,
+    permission: opts.permission || 1,
+    granted: opts.granted || 1,
+    userid: opts.userId || 7
+  };
+}
+
 exports.createAction = function createAction(type, opts) {
   type = useKey(type);
 
@@ -96,12 +110,16 @@ exports.createAction = function createAction(type, opts) {
     return actionCreateAsset(opts);
   }
 
+  if (type === 'create_link') {
+    return actionCreateLink(opts);
+  }
+
   if (type === 'set_attribute_value') {
     return actionSetAttribute(opts);
   }
 
-  if (type === 'create_link') {
-    return actionCreateLink(opts);
+  if (type === 'set_permission') {
+    return actionSetPermission(opts);
   }
 
   throw new Error('Unknown action type of \'' + type + '\'');
