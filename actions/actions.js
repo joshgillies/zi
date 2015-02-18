@@ -36,10 +36,9 @@ function Action(type, opts) {
   if(!(this instanceof Action))
     return new Action(type, opts);
 
-  if(!(type = useKey(type)))
-    throw new Error('Unknown action type of \'' + type + '\'');
+  var _type = useKey(type);
 
-  switch (type) {
+  switch (_type) {
     case 'add_web_path':
       this.opts = {
         action_id: getActionId.apply(null, [type, opts.id]),
@@ -92,6 +91,8 @@ function Action(type, opts) {
         userid: opts.userId || 7
       };
       break;
+    default:
+      throw new Error('Unknown action type of \'' + type + '\'');
   }
 }
 
