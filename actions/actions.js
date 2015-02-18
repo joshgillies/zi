@@ -32,96 +32,76 @@ function getActionId(type) {
   return action.apply(null, args);
 }
 
-function actionAddPath(opts) {
-  var type = 'add_web_path';
+function Action(type, opts) {
+  if(!(this instanceof Action))
+    return new Action(type, opts);
 
-  return {
-    action_id: getActionId.apply(null, [type, opts.id]),
-    action_type: type,
-    asset: opts.assetId, // id of asset performing action against
-    path: opts.path // web path
-  };
+  if(!(type = useKey(type)))
+    throw new Error('Unknown action type of \'' + type + '\'');
+
+  switch (type) {
+    case 'add_web_path':
+      this.opts = {
+        action_id: getActionId.apply(null, [type, opts.id]),
+        action_type: type,
+        asset: opts.assetId, // id of asset performing action against
+        path: opts.path // web path
+      };
+      break;
+    case 'create_asset':
+      this.opts = {
+        action_id: getActionId.apply(null, [type, opts.id]),
+        action_type: type,
+        type_code: opts.type,
+        parentid: opts.parentId || 1,
+        value: opts.value || '',
+        link_type: opts.link || LINKS['TYPE_1'],
+        is_dependant: opts.dependant || 0,
+        is_exclusive: opts.exclusive || 0
+      };
+      break;
+    case 'create_link':
+      this.opts = {
+        action_id: getActionId.apply(null, [type, opts.to, opts.from]),
+        action_type: type,
+        asset: opts.assetId,
+        value: opts.value || '',
+        link_type: opts.link || LINKS['TYPE_1'],
+        is_dependant: opts.dependant || 0,
+        is_exclusive: opts.exclusive || 0,
+        assetid: '', // id of asset linking to
+        is_major: '' // ???
+      };
+      break;
+    case 'set_attribute_value':
+      this.opts = {
+        action_id: getActionId.apply(null, [type, opts.attribute, opts.id]),
+        action_type: type,
+        asset: opts.assetId,
+        attribute: opts.attribute,
+        value: opts.value || ''
+      };
+      break;
+    case 'set_permission':
+      this.opts = {
+        action_id: getActionId.apply(null, [type, opts.assetId, opts.permission, opts.userId]),
+        action_type: type,
+        asset: opts.assetId,
+        permission: opts.permission || 1,
+        granted: opts.granted || 1,
+        userid: opts.userId || 7
+      };
+      break;
+  }
 }
 
-function actionCreateAsset(opts) {
-  var type = 'create_asset';
-
-  return {
-    action_id: getActionId.apply(null, [type, opts.id]),
-    action_type: type,
-    type_code: opts.type,
-    parentid: opts.parentId || 1,
-    value: opts.value || '',
-    link_type: opts.link || LINKS['TYPE_1'],
-    is_dependant: opts.dependant || 0,
-    is_exclusive: opts.exclusive || 0
-  };
-}
-
-function actionCreateLink(opts) {
-  var type = 'create_link';
-
-  return {
-    action_id: getActionId.apply(null, [type, opts.to, opts.from]),
-    action_type: type,
-    asset: opts.assetId,
-    value: opts.value || '',
-    link_type: opts.link || LINKS['TYPE_1'],
-    is_dependant: opts.dependant || 0,
-    is_exclusive: opts.exclusive || 0,
-    assetid: '', // id of asset linking to
-    is_major: '' // ???
-  };
-}
-
-function actionSetAttribute(opts) {
-  var type = 'set_attribute_value';
-
-  return {
-    action_id: getActionId.apply(null, [type, opts.attribute, opts.id]),
-    action_type: type,
-    asset: opts.assetId,
-    attribute: opts.attribute,
-    value: opts.value || ''
-  };
-}
-
-function actionSetPermission(opts) {
-  var type = 'set_permission';
-
-  return {
-    action_id: getActionId.apply(null, [type, opts.assetId, opts.permission, opts.userId]),
-    action_type: type,
-    asset: opts.assetId,
-    permission: opts.permission || 1,
-    granted: opts.granted || 1,
-    userid: opts.userId || 7
-  };
-}
-
-exports.createAction = function createAction(type, opts) {
-  type = useKey(type);
-
-  if (type === 'add_web_path') {
-    return actionAddPath(opts);
+Action.prototype.toXML = function assetToXML() {
+  function keyToXML(key) {
+    return '<' + key + '>' + this[key] + '</' + key + '>';
   }
-
-  if (type === 'create_asset') {
-    return actionCreateAsset(opts);
-  }
-
-  if (type === 'create_link') {
-    return actionCreateLink(opts);
-  }
-
-  if (type === 'set_attribute_value') {
-    return actionSetAttribute(opts);
-  }
-
-  if (type === 'set_permission') {
-    return actionSetPermission(opts);
-  }
-
-  throw new Error('Unknown action type of \'' + type + '\'');
+  return '<action>' + Object.keys(this.opts).map(keyToXML, this.opts).join('') + '</action>';
 };
+
+exports.Action = Action;
+exports.createAction = Action;
 exports.getActionId = getActionId;
