@@ -62,9 +62,10 @@ function Action(type, opts) {
         type_code: opts.type,
         parentid: opts.parentId || 1,
         value: opts.value || '',
-        link_type: opts.link || LINKS['TYPE_1'],
-        is_dependant: opts.dependant || 0,
-        is_exclusive: opts.exclusive || 0
+        link_type: typeof opts.link === 'string' ?
+          LINKS[ opts.link.toUpperCase() || 'TYPE_1'] : opts.link || 1,
+        is_dependant: opts.dependant ? 1 : 0,
+        is_exclusive: opts.exclusive ? 1 : 0,
       };
       break;
     case 'create_link':
@@ -73,9 +74,10 @@ function Action(type, opts) {
         action_type: type,
         asset: opts.assetId,
         value: opts.value || '',
-        link_type: opts.link || LINKS['TYPE_1'],
-        is_dependant: opts.dependant || 0,
-        is_exclusive: opts.exclusive || 0,
+        link_type: typeof opts.link === 'string' ?
+          LINKS[ opts.link.toUpperCase() || 'TYPE_1'] : opts.link || 1,
+        is_dependant: opts.dependant ? 1 : 0,
+        is_exclusive: opts.exclusive ? 1 : 0,
         assetid: '', // id of asset linking to
         is_major: '' // ???
       };
@@ -94,7 +96,8 @@ function Action(type, opts) {
         action_id: getActionId.apply(null, [type, opts.assetId, opts.permission, opts.userId]),
         action_type: type,
         asset: opts.assetId,
-        permission: PERMISSIONS[opts.permission] || 1,
+        permission: typeof opts.permission === 'string' ?
+          PERMISSIONS[ opts.permission.toLowerCase() || 'read'] : opts.permission || 1,
         granted: opts.granted ? 1 : 0,
         userid: opts.userId || PUBLIC_USER
       };
