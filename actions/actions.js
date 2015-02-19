@@ -24,6 +24,14 @@ var LINKS = {
   NOTICE: 8
 };
 
+var PERMISSIONS = {
+  read: 1,
+  write: 2,
+  admin: 3
+};
+
+var PUBLIC_USER = 7;
+
 function getActionId(type) {
   var args = Array.prototype.slice.call(arguments, 1);
   var action = ACTIONS[useKey(type)];
@@ -86,9 +94,9 @@ function Action(type, opts) {
         action_id: getActionId.apply(null, [type, opts.assetId, opts.permission, opts.userId]),
         action_type: type,
         asset: opts.assetId,
-        permission: opts.permission || 1,
-        granted: opts.granted || 1,
-        userid: opts.userId || 7
+        permission: PERMISSIONS[opts.permission] || 1,
+        granted: opts.granted ? 1 : 0,
+        userid: opts.userId || PUBLIC_USER
       };
       break;
     default:
