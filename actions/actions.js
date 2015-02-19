@@ -3,10 +3,11 @@ var actionId = helpers.actionId;
 var useKey = helpers.useKey;
 
 var ATTRIBUTES = {
+  attributes: actionId('set_{0}_attributes'),
+  html: actionId('set_{0}_{1}_html', 2),
   name: actionId('set_{0}_name'),
-  short_name: actionId('set_{0}_short_name'),
   not_found_page_cache_globally: actionId('set_{0}_not_found_page_cache_globally'),
-  attributes: actionId('set_{0}_attributes')
+  short_name: actionId('set_{0}_short_name')
 };
 
 var ACTIONS = {
@@ -63,7 +64,7 @@ function Action(type, opts) {
         parentid: opts.parentId || 1,
         value: opts.value || '',
         link_type: typeof opts.link === 'string' ?
-          LINKS[ opts.link.toUpperCase() || 'TYPE_1'] : opts.link || 1,
+          LINKS[opts.link.toUpperCase() || 'TYPE_1'] : opts.link || 1,
         is_dependant: opts.dependant ? 1 : 0,
         is_exclusive: opts.exclusive ? 1 : 0,
       };
@@ -75,7 +76,7 @@ function Action(type, opts) {
         asset: opts.assetId,
         value: opts.value || '',
         link_type: typeof opts.link === 'string' ?
-          LINKS[ opts.link.toUpperCase() || 'TYPE_1'] : opts.link || 1,
+          LINKS[opts.link.toUpperCase() || 'TYPE_1'] : opts.link || 1,
         is_dependant: opts.dependant ? 1 : 0,
         is_exclusive: opts.exclusive ? 1 : 0,
         assetid: '', // id of asset linking to
@@ -97,7 +98,7 @@ function Action(type, opts) {
         action_type: type,
         asset: opts.assetId,
         permission: typeof opts.permission === 'string' ?
-          PERMISSIONS[ opts.permission.toLowerCase() || 'read'] : opts.permission || 1,
+          PERMISSIONS[opts.permission.toLowerCase() || 'read'] : opts.permission || 1,
         granted: opts.granted ? 1 : 0,
         userid: opts.userId || PUBLIC_USER
       };
@@ -107,7 +108,7 @@ function Action(type, opts) {
   }
 }
 
-Action.prototype.toXML = function assetToXML() {
+Action.prototype.toXML = function actionToXML() {
   function keyToXML(key) {
     return '<' + key + '>' + this[key] + '</' + key + '>';
   }
