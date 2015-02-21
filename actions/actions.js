@@ -26,9 +26,9 @@ var LINKS = {
 };
 
 var PERMISSIONS = {
-  read: 1,
-  write: 2,
-  admin: 3
+  READ: 1,
+  WRITE: 2,
+  ADMIN: 3
 };
 
 var PUBLIC_USER = 7;
@@ -98,7 +98,7 @@ function Action(type, opts) {
         action_type: type,
         asset: opts.assetId,
         permission: typeof opts.permission === 'string' ?
-          PERMISSIONS[opts.permission.toLowerCase() || 'read'] : opts.permission || 1,
+          PERMISSIONS[opts.permission.toUpperCase() || 'READ'] : opts.permission || 1,
         granted: opts.granted ? 1 : 0,
         userid: opts.userId || PUBLIC_USER
       };
