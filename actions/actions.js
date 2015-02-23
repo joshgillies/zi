@@ -68,42 +68,36 @@ function Action(type, opts) {
     value: opts.value || ''
   };
 
-  function assignDefaults(value) {
-    this[value] = DEFAULTS[value];
-  }
-
-  // all actions have a type
-  assignDefaults.call(this, 'action_type');
+  var properties = ['action_type'];
 
   switch (DEFAULTS.action_type) {
     case 'add_web_path':
       this.action_id = DEFAULTS.action_id.call(null, opts.id);
-      ['asset', 'path']
-        .forEach(assignDefaults, this);
+      properties.push('asset', 'path');
       break;
     case 'create_asset':
       this.action_id = DEFAULTS.action_id.call(null, opts.id);
-      ['type_code', 'parentid', 'value', 'link_type', 'is_dependant', 'is_exclusive']
-        .forEach(assignDefaults, this);
+      properties.push('type_code', 'parentid', 'value', 'link_type', 'is_dependant', 'is_exclusive');
       break;
     case 'create_link':
       this.action_id = DEFAULTS.action_id.call(null, opts.to, opts.from);
-      ['asset', 'value', 'link_type', 'is_dependant', 'is_exclusive', 'assetid', 'is_major']
-        .forEach(assignDefaults, this);
+      properties.push('asset', 'value', 'link_type', 'is_dependant', 'is_exclusive', 'assetid', 'is_major');
       break;
     case 'set_attribute_value':
       this.action_id = DEFAULTS.action_id.call(null, opts.attribute, opts.id);
-      ['asset', 'attribute', 'value']
-        .forEach(assignDefaults, this);
+      properties.push('asset', 'attribute', 'value');
       break;
     case 'set_permission':
       this.action_id = DEFAULTS.action_id.call(null, opts.assetId, opts.permission, opts.userId);
-      ['asset', 'permission', 'granted', 'userid']
-        .forEach(assignDefaults, this);
+      properties.push('asset', 'permission', 'granted', 'userid');
       break;
     default:
       throw new Error('Unknown action type of \'' + type + '\'');
   }
+
+  properties.forEach(function assignDefaults(value) {
+    this[value] = DEFAULTS[value];
+  }, this);
 }
 
 Action.prototype.toXML = function actionToXML() {
