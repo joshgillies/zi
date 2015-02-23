@@ -4,7 +4,7 @@ var useKey = helpers.useKey;
 
 var ATTRIBUTES = {
   attributes: actionId('set_{0}_attributes'),
-  html: actionId('set_{0}_{1}_html', 2),
+  html: actionId('set_{0}_html'),
   name: actionId('set_{0}_name'),
   not_found_page_cache_globally: actionId('set_{0}_not_found_page_cache_globally'),
   short_name: actionId('set_{0}_short_name')
@@ -34,74 +34,72 @@ var PERMISSIONS = {
 var PUBLIC_USER = 7;
 
 function getActionId(type) {
-  var args = Array.prototype.slice.call(arguments, 1);
-  var action = ACTIONS[useKey(type)];
-  if (typeof action === 'object')
-    action = action[useKey(args.shift())];
-  return action.apply(null, args);
+  return function actionId() {
+    var args = Array.prototype.slice.call(arguments);
+    var action = ACTIONS[useKey(type)];
+    if (typeof action === 'object')
+      action = action[useKey(args.shift())];
+    return action.apply(null, args);
+  };
 }
 
 function Action(type, opts) {
   if(!(this instanceof Action))
     return new Action(type, opts);
 
-  var _type = useKey(type);
+  var DEFAULTS = {
+    action_id: getActionId(type),
+    action_type: useKey(type),
+    asset: opts.assetId || opts.from, // id of asset performing action against
+    assetid: opts.to, // id of asset linking to
+    attribute: opts.attribute,
+    granted: opts.granted ? 1 : 0,
+    is_dependant: opts.dependant ? 1 : 0,
+    is_exclusive: opts.exclusive ? 1 : 0,
+    is_major: opts.major || '', // ???
+    link_type: typeof opts.link === 'string' ?
+      LINKS[opts.link.toUpperCase() || 'TYPE_1'] : opts.link || 1,
+    parentid: opts.parentId || 1,
+    path: opts.path, // web path
+    permission: typeof opts.permission === 'string' ?
+      PERMISSIONS[opts.permission.toUpperCase() || 'READ'] : opts.permission || 1,
+    type_code: opts.type,
+    userid: opts.userId || PUBLIC_USER,
+    value: opts.value || ''
+  };
 
-  switch (_type) {
+  function assignDefaults(value) {
+    this[value] = DEFAULTS[value];
+  }
+
+  // all actions have a type
+  assignDefaults.call(this, 'action_type');
+
+  switch (DEFAULTS.action_type) {
     case 'add_web_path':
-      this.opts = {
-        action_id: getActionId.apply(null, [type, opts.id]),
-        action_type: type,
-        asset: opts.assetId, // id of asset performing action against
-        path: opts.path // web path
-      };
+      this.action_id = DEFAULTS.action_id.call(null, opts.id);
+      ['asset', 'path']
+        .forEach(assignDefaults, this);
       break;
     case 'create_asset':
-      this.opts = {
-        action_id: getActionId.apply(null, [type, opts.id]),
-        action_type: type,
-        type_code: opts.type,
-        parentid: opts.parentId || 1,
-        value: opts.value || '',
-        link_type: typeof opts.link === 'string' ?
-          LINKS[opts.link.toUpperCase() || 'TYPE_1'] : opts.link || 1,
-        is_dependant: opts.dependant ? 1 : 0,
-        is_exclusive: opts.exclusive ? 1 : 0,
-      };
+      this.action_id = DEFAULTS.action_id.call(null, opts.id);
+      ['type_code', 'parentid', 'value', 'link_type', 'is_dependant', 'is_exclusive']
+        .forEach(assignDefaults, this);
       break;
     case 'create_link':
-      this.opts = {
-        action_id: getActionId.apply(null, [type, opts.to, opts.from]),
-        action_type: type,
-        asset: opts.assetId,
-        value: opts.value || '',
-        link_type: typeof opts.link === 'string' ?
-          LINKS[opts.link.toUpperCase() || 'TYPE_1'] : opts.link || 1,
-        is_dependant: opts.dependant ? 1 : 0,
-        is_exclusive: opts.exclusive ? 1 : 0,
-        assetid: '', // id of asset linking to
-        is_major: '' // ???
-      };
+      this.action_id = DEFAULTS.action_id.call(null, opts.to, opts.from);
+      ['asset', 'value', 'link_type', 'is_dependant', 'is_exclusive', 'assetid', 'is_major']
+        .forEach(assignDefaults, this);
       break;
     case 'set_attribute_value':
-      this.opts = {
-        action_id: getActionId.apply(null, [type, opts.attribute, opts.id]),
-        action_type: type,
-        asset: opts.assetId,
-        attribute: opts.attribute,
-        value: opts.value || ''
-      };
+      this.action_id = DEFAULTS.action_id.call(null, opts.attribute, opts.id);
+      ['asset', 'attribute', 'value']
+        .forEach(assignDefaults, this);
       break;
     case 'set_permission':
-      this.opts = {
-        action_id: getActionId.apply(null, [type, opts.assetId, opts.permission, opts.userId]),
-        action_type: type,
-        asset: opts.assetId,
-        permission: typeof opts.permission === 'string' ?
-          PERMISSIONS[opts.permission.toUpperCase() || 'READ'] : opts.permission || 1,
-        granted: opts.granted ? 1 : 0,
-        userid: opts.userId || PUBLIC_USER
-      };
+      this.action_id = DEFAULTS.action_id.call(null, opts.assetId, opts.permission, opts.userId);
+      ['asset', 'permission', 'granted', 'userid']
+        .forEach(assignDefaults, this);
       break;
     default:
       throw new Error('Unknown action type of \'' + type + '\'');
@@ -110,9 +108,9 @@ function Action(type, opts) {
 
 Action.prototype.toXML = function actionToXML() {
   function keyToXML(key) {
-    return '<' + key + '>' + this[key] + '</' + key + '>';
+    return '    <' + key + '>' + this[key] + '</' + key + '>';
   }
-  return '<action>' + Object.keys(this.opts).map(keyToXML, this.opts).join('') + '</action>';
+  return ['<action>', Object.keys(this).map(keyToXML, this).join('\n'), '</action>'].join('\n');
 };
 
 exports.Action = Action;
