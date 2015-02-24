@@ -4,7 +4,7 @@ var test = require('tape');
 
 test('use shorthand helpers', function(t) {
   t.equal(helpers.useKey('add_path'), 'add_web_path', 'shorthand selector');
-  t.equal(helpers.useKey('create_asset'), 'create_asset', 'passthrough when no shortahnd is available');
+  t.equal(helpers.useKey('create_asset'), 'create_asset', 'passthrough when no shorthand is available');
   t.end();
 });
 
@@ -37,3 +37,35 @@ test('create action ids', function(t) {
   t.end();
 });
 
+test('create actions', function(t) {
+  var action = actions.createAction('create_asset', {
+    id: 'Site_1',
+    parentId: 1,
+    type: 'site'
+  });
+  var expected = {
+    action_id: 'create_Site_1',
+    action_type: 'create_asset',
+    type_code: 'site',
+    parentid: 1,
+    value: '',
+    link_type: 1,
+    is_dependant: 0,
+    is_exclusive: 0
+  };
+  var xml = [
+    '<action>',
+    '    <action_id>create_Site_1</action_id>',
+    '    <action_type>create_asset</action_type>',
+    '    <type_code>site</type_code>',
+    '    <parentid>1</parentid>',
+    '    <value></value>',
+    '    <link_type>1</link_type>',
+    '    <is_dependant>0</is_dependant>',
+    '    <is_exclusive>0</is_exclusive>',
+    '</action>'
+  ].join('\n');
+  t.deepEqual(action, expected, 'create asset object');
+  t.equal(action.toXML(), xml, 'create asset XML');
+  t.end();
+});
