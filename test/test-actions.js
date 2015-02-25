@@ -3,8 +3,8 @@ var actions = require('../actions');
 var test = require('tape');
 
 test('use shorthand helpers', function(t) {
-  t.equal(helpers.useKey('add_path'), 'add_web_path', 'shorthand selector');
-  t.equal(helpers.useKey('create_asset'), 'create_asset', 'passthrough when no shorthand is available');
+  t.equal(helpers.keyShorthand('add_path'), 'add_web_path', 'shorthand selector');
+  t.equal(helpers.keyShorthand('create_asset'), 'create_asset', 'passthrough when no shorthand is available');
   t.end();
 });
 
@@ -15,7 +15,7 @@ test('join asset type with id', function(t) {
 
 test('create action ids', function(t) {
   t.equal(
-    actions.getActionId('add_path')('Site_1'),
+    actions.getActionId('add_web_path')('Site_1'),
     'add_Site_1_path',
     'add path action id'
   );
@@ -25,7 +25,7 @@ test('create action ids', function(t) {
     'create link action id'
   );
   t.equal(
-    actions.getActionId('set_attribute')('name', 'Site_1'),
+    actions.getActionId('set_attribute_value')('Site_1', 'name'),
     'set_Site_1_name',
     'set attribute action id'
   );

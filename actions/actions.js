@@ -1,20 +1,12 @@
 var helpers = require('./helpers');
 var actionId = helpers.actionId;
-var useKey = helpers.useKey;
-
-var ATTRIBUTES = {
-  attributes: actionId('set_{0}_attributes'),
-  html: actionId('set_{0}_html'),
-  name: actionId('set_{0}_name'),
-  not_found_page_cache_globally: actionId('set_{0}_not_found_page_cache_globally'),
-  short_name: actionId('set_{0}_short_name')
-};
+var keyShorthand = helpers.keyShorthand;
 
 var ACTIONS = {
   add_web_path: actionId('add_{0}_path'),
   create_asset: actionId('create_{0}'),
   create_link: actionId('link_notice_{0}_to_{1}', 2),
-  set_attribute_value: ATTRIBUTES,
+  set_attribute_value: actionId('set_{0}_{1}', 2),
   set_permission: actionId('set_permission_{0}_{1}_{2}', 3)
 };
 
@@ -36,9 +28,7 @@ var PUBLIC_USER = 7;
 function getActionId(type) {
   return function actionId() {
     var args = Array.prototype.slice.call(arguments);
-    var action = ACTIONS[useKey(type)];
-    if (typeof action === 'object')
-      action = action[useKey(args.shift())];
+    var action = ACTIONS[type];
     return action.apply(null, args);
   };
 }
@@ -48,11 +38,11 @@ function Action(type, opts) {
     return new Action(type, opts);
 
   var DEFAULTS = {
-    action_id: getActionId(type),
-    action_type: useKey(type),
+    action_id: getActionId(keyShorthand(type)),
+    action_type: keyShorthand(type),
     asset: opts.assetId || opts.from, // id of asset performing action against
     assetid: opts.to, // id of asset linking to
-    attribute: opts.attribute,
+    attribute: keyShorthand(opts.attribute),
     granted: opts.granted ? 1 : 0,
     is_dependant: opts.dependant ? 1 : 0,
     is_exclusive: opts.exclusive ? 1 : 0,

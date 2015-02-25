@@ -6,7 +6,7 @@ var HELPERS = {
   add_path: 'add_web_path'
 };
 
-exports.useKey = function useKey(key) {
+exports.keyShorthand = function keyShorthand(key) {
   return HELPERS[key] || key;
 };
 
