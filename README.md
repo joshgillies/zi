@@ -2,6 +2,8 @@
 
 An import utility for Squiz Matrix.
 
+[![Build Status](https://travis-ci.org/joshgillies/zi.svg)](https://travis-ci.org/joshgillies/zi)
+
 ## Motivation
 
 Zion or Zi for short aims to provide a utility for both generation and optimisation
