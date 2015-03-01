@@ -25,7 +25,7 @@ var PERMISSIONS = {
 
 var PUBLIC_USER = 7;
 
-function getActionId(type) {
+function setActionId(type) {
   return function actionId() {
     var args = Array.prototype.slice.call(arguments);
     var action = ACTIONS[type];
@@ -38,7 +38,7 @@ function Action(type, opts) {
     return new Action(type, opts);
 
   var DEFAULTS = {
-    action_id: getActionId(keyShorthand(type)),
+    action_id: setActionId(keyShorthand(type)),
     action_type: keyShorthand(type),
     asset: opts.assetId || opts.from, // id of asset performing action against
     assetid: opts.to, // id of asset linking to
@@ -99,4 +99,4 @@ Action.prototype.toXML = function actionToXML() {
 
 exports.Action = Action;
 exports.createAction = Action;
-exports.getActionId = getActionId;
+exports.setActionId = setActionId;

@@ -15,22 +15,22 @@ test('join asset type with id', function(t) {
 
 test('create action ids', function(t) {
   t.equal(
-    actions.getActionId('add_web_path')('Site_1'),
+    actions.setActionId('add_web_path')('Site_1'),
     'add_Site_1_path',
     'add path action id'
   );
   t.equal(
-    actions.getActionId('create_link')(1, 2),
+    actions.setActionId('create_link')(1, 2),
     'link_notice_1_to_2',
     'create link action id'
   );
   t.equal(
-    actions.getActionId('set_attribute_value')('Site_1', 'name'),
+    actions.setActionId('set_attribute_value')('Site_1', 'name'),
     'set_Site_1_name',
     'set attribute action id'
   );
   t.equal(
-    actions.getActionId('set_permission')(1, 1, 2),
+    actions.setActionId('set_permission')(1, 1, 2),
     'set_permission_1_1_2',
     'set permission action id'
   );
