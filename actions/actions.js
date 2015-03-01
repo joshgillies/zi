@@ -5,7 +5,7 @@ var keyShorthand = helpers.keyShorthand;
 var ACTIONS = {
   add_web_path: actionId('add_{0}_path'),
   create_asset: actionId('create_{0}'),
-  create_link: actionId('link_notice_{0}_to_{1}', 2),
+  create_link: actionId('link_{0}_{1}_to_{2}', 3),
   set_attribute_value: actionId('set_{0}_{1}', 2),
   set_permission: actionId('set_permission_{0}_{1}_{2}', 3)
 };
@@ -70,7 +70,7 @@ function Action(type, opts) {
       properties.push('type_code', 'parentid', 'value', 'link_type', 'is_dependant', 'is_exclusive');
       break;
     case 'create_link':
-      this.action_id = DEFAULTS.action_id.call(null, opts.to, opts.from);
+      this.action_id = DEFAULTS.action_id.call(null, DEFAULTS.link_type, opts.to, opts.from);
       properties.push('asset', 'value', 'link_type', 'is_dependant', 'is_exclusive', 'assetid', 'is_major');
       break;
     case 'set_attribute_value':

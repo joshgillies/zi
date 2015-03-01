@@ -20,7 +20,7 @@ test('create action ids', function(t) {
     'add path action id'
   );
   t.equal(
-    actions.setActionId('create_link')(1, 2),
+    actions.setActionId('create_link')('notice', 1, 2),
     'link_notice_1_to_2',
     'create link action id'
   );
@@ -89,7 +89,7 @@ test('create actions', function(t) {
         '</action>'
       ].join('\n')
     },
-    create_link: {
+    set_attribute: {
       action: actions.createAction('set_attribute_value', {
         id: 'Site_1',
         assetId: 1,
@@ -110,6 +110,36 @@ test('create actions', function(t) {
         '    <asset>1</asset>',
         '    <attribute>html</attribute>',
         '    <value>Test Site</value>',
+        '</action>'
+      ].join('\n')
+    },
+    create_link: {
+      action: actions.createAction('create_link', {
+        to: 2,
+        from: 1
+      }),
+      expected: {
+        action_id: 'link_1_2_to_1',
+        action_type: 'create_link',
+        asset: 1,
+        assetid: 2,
+        is_dependant: 0,
+        is_exclusive: 0,
+        is_major: '',
+        link_type: 1,
+        value: ''
+      },
+      xml: [
+        '<action>',
+        '    <action_id>link_1_2_to_1</action_id>',
+        '    <action_type>create_link</action_type>',
+        '    <asset>1</asset>',
+        '    <value></value>',
+        '    <link_type>1</link_type>',
+        '    <is_dependant>0</is_dependant>',
+        '    <is_exclusive>0</is_exclusive>',
+        '    <assetid>2</assetid>',
+        '    <is_major></is_major>',
         '</action>'
       ].join('\n')
     },
