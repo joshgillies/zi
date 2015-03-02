@@ -16,7 +16,7 @@ Whilst the latter isn't unreasonable it's far from practical or sustainable.
 An exported asset tree can potentially consist of hundreds of interwoven typically
 synchronous operations, resulting in a less than performant import process.
 As a result the import tool typically gets overlooked as a tool for automation
-and even maintinence of Squiz Matrix implementations.
+and even maintenance of Squiz Matrix implementations.
 
 ### Goals
 
