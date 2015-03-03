@@ -110,7 +110,7 @@ exports.createAsset = function createAsset(opts) {
 exports.createLink = function createLink(opts) {
   return new Action('create_link', opts);
 };
-exports.setAttribute = exports.setAttributeValie = function setAttribute(opts) {
+exports.setAttribute = exports.setAttributeValue = function setAttribute(opts) {
   return new Action('set_attribute_value', opts);
 };
 exports.setPermission = function setPermission(opts) {
