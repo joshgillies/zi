@@ -1,6 +1,12 @@
 var helpers = require('./helpers');
 var actionId = helpers.actionId;
 var keyShorthand = helpers.keyShorthand;
+var xml2js = require('xml2js');
+
+var buildAction = new xml2js.Builder({
+  rootName: 'action',
+  headless: true
+});
 
 var ACTIONS = {
   add_web_path: actionId('add_{0}_path'),
@@ -91,10 +97,7 @@ function Action(type, opts) {
 }
 
 Action.prototype.toXML = function actionToXML() {
-  function keyToXML(key) {
-    return '    <' + key + '>' + this[key] + '</' + key + '>';
-  }
-  return ['<action>', Object.keys(this).map(keyToXML, this).join('\n'), '</action>'].join('\n');
+  return buildAction.buildObject(this);
 };
 
 exports.Action = Action;

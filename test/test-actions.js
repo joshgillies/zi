@@ -53,10 +53,10 @@ test('create actions', function(t) {
       },
       xml: [
         '<action>',
-        '    <action_id>add_Site_1_path</action_id>',
-        '    <action_type>add_web_path</action_type>',
-        '    <asset>1</asset>',
-        '    <path>test-site</path>',
+        '  <action_id>add_Site_1_path</action_id>',
+        '  <action_type>add_web_path</action_type>',
+        '  <asset>1</asset>',
+        '  <path>test-site</path>',
         '</action>'
       ].join('\n')
     },
@@ -78,14 +78,14 @@ test('create actions', function(t) {
       },
       xml: [
         '<action>',
-        '    <action_id>create_Site_1</action_id>',
-        '    <action_type>create_asset</action_type>',
-        '    <type_code>site</type_code>',
-        '    <parentid>1</parentid>',
-        '    <value></value>',
-        '    <link_type>1</link_type>',
-        '    <is_dependant>0</is_dependant>',
-        '    <is_exclusive>0</is_exclusive>',
+        '  <action_id>create_Site_1</action_id>',
+        '  <action_type>create_asset</action_type>',
+        '  <type_code>site</type_code>',
+        '  <parentid>1</parentid>',
+        '  <value/>',
+        '  <link_type>1</link_type>',
+        '  <is_dependant>0</is_dependant>',
+        '  <is_exclusive>0</is_exclusive>',
         '</action>'
       ].join('\n')
     },
@@ -105,11 +105,11 @@ test('create actions', function(t) {
       },
       xml: [
         '<action>',
-        '    <action_id>set_html_Site_1</action_id>',
-        '    <action_type>set_attribute_value</action_type>',
-        '    <asset>1</asset>',
-        '    <attribute>html</attribute>',
-        '    <value>Test Site</value>',
+        '  <action_id>set_html_Site_1</action_id>',
+        '  <action_type>set_attribute_value</action_type>',
+        '  <asset>1</asset>',
+        '  <attribute>html</attribute>',
+        '  <value>Test Site</value>',
         '</action>'
       ].join('\n')
     },
@@ -131,15 +131,15 @@ test('create actions', function(t) {
       },
       xml: [
         '<action>',
-        '    <action_id>link_1_2_to_1</action_id>',
-        '    <action_type>create_link</action_type>',
-        '    <asset>1</asset>',
-        '    <value></value>',
-        '    <link_type>1</link_type>',
-        '    <is_dependant>0</is_dependant>',
-        '    <is_exclusive>0</is_exclusive>',
-        '    <assetid>2</assetid>',
-        '    <is_major></is_major>',
+        '  <action_id>link_1_2_to_1</action_id>',
+        '  <action_type>create_link</action_type>',
+        '  <asset>1</asset>',
+        '  <value/>',
+        '  <link_type>1</link_type>',
+        '  <is_dependant>0</is_dependant>',
+        '  <is_exclusive>0</is_exclusive>',
+        '  <assetid>2</assetid>',
+        '  <is_major/>',
         '</action>'
       ].join('\n')
     },
@@ -160,12 +160,12 @@ test('create actions', function(t) {
       },
       xml: [
         '<action>',
-        '    <action_id>set_permission_1_read_7</action_id>',
-        '    <action_type>set_permission</action_type>',
-        '    <asset>1</asset>',
-        '    <permission>1</permission>',
-        '    <granted>1</granted>',
-        '    <userid>7</userid>',
+        '  <action_id>set_permission_1_read_7</action_id>',
+        '  <action_type>set_permission</action_type>',
+        '  <asset>1</asset>',
+        '  <permission>1</permission>',
+        '  <granted>1</granted>',
+        '  <userid>7</userid>',
         '</action>'
       ].join('\n')
     }
