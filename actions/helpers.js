@@ -18,9 +18,12 @@ exports.actionId = function actionId(template, expected) {
   return function formatter() {
     var args = Array.prototype.slice.call(arguments);
     expected = expected || 1;
-    if (args.length === expected)
-      return format(template, args);
-    throw new Error(format('Expected {0} arguments instead got {1}', expected, args.length));
+    if (args.length !== expected)
+      throw new Error('Expected ' + expected + ' arguments instead got ' + args.length);
+    if (args.indexOf(undefined) >= 0)
+      throw new Error('Undefined must not be passed to format function');
+
+    return format(template, args);
   };
 };
 
