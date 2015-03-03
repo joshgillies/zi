@@ -100,6 +100,20 @@ Action.prototype.toXML = function actionToXML() {
   return buildAction.buildObject(this);
 };
 
-exports.Action = Action;
 exports.createAction = Action;
+exports.addPath = exports.addWebPath = function addPath(opts) {
+  return new Action('add_web_path', opts);
+};
+exports.createAsset = function createAsset(opts) {
+  return new Action('create_asset', opts);
+};
+exports.createLink = function createLink(opts) {
+  return new Action('create_link', opts);
+};
+exports.setAttribute = exports.setAttributeValie = function setAttribute(opts) {
+  return new Action('set_attribute_value', opts);
+};
+exports.setPermission = function setPermission(opts) {
+  return new Action('set_permission', opts);
+};
 exports.setActionId = setActionId;
