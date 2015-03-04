@@ -40,7 +40,7 @@ test('create action ids', function(t) {
 test('create actions', function(t) {
   var tests = {
     add_web_path: {
-      action: actions.createAction('add_web_path', {
+      action: actions.addPath({
         id: 'Site_1',
         path: 'test-site',
         assetId: '1'
@@ -61,7 +61,7 @@ test('create actions', function(t) {
       ].join('\n')
     },
     create_asset: {
-      action: actions.createAction('create_asset', {
+      action: actions.createAsset({
         id: 'Site_1',
         parentId: 1,
         type: 'site'
@@ -90,7 +90,7 @@ test('create actions', function(t) {
       ].join('\n')
     },
     set_attribute: {
-      action: actions.createAction('set_attribute_value', {
+      action: actions.setAttribute({
         id: 'Site_1',
         assetId: 1,
         attribute: 'html',
@@ -114,7 +114,7 @@ test('create actions', function(t) {
       ].join('\n')
     },
     create_link: {
-      action: actions.createAction('create_link', {
+      action: actions.createLink({
         to: 2,
         from: 1
       }),
@@ -144,7 +144,7 @@ test('create actions', function(t) {
       ].join('\n')
     },
     set_permission: {
-      action: actions.createAction('set_permission', {
+      action: actions.setPermission({
         assetId: 1,
         permission: 'read',
         granted: true,
