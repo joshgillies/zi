@@ -20,11 +20,29 @@ and even maintenance of Squiz Matrix implementations.
 
 ### Goals
 
- - Unlock the true potential behind the "[Import Assets from XML Tool]".
+ - Unlock the true potential of the "[Import Assets from XML Tool]".
  - Provide programatic API for generating asset import.xml manifests.
  - Optimise import.xml manifests by batching various operations.
  - Parse exported asset trees for local replication, thus enabling development outside of Matrix!
  - Investigate alternate uses for the "[Import Assets from XML Tool]". eg. update assets from XML!
+
+## API
+
+### Actions
+
+An action is a task that is performed against a Squiz Matrix system.
+
+Zion exposes the following methods for creating actions:
+
+#### zion.addPath(opts)
+
+#### zion.createAsset(opts)
+
+#### zion.createLink(opts)
+
+#### zion.setAttribute(opts)
+
+#### zion.setPermission(opts)
 
 ## License
 
