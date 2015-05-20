@@ -1,6 +1,3 @@
-var Importer = require('node-matrix-importer')
-var xml = Importer({ sortActions: true })
-
 function Asset (type, opts, context) {
   if (!(this instanceof Asset)) {
     return new Asset(type, opts, context)
@@ -27,7 +24,7 @@ function Asset (type, opts, context) {
   opts.parentId = opts.parentId || '1'
   opts.type = opts.type || type
 
-  var asset = xml.createAsset(opts)
+  var asset = this.writer.createAsset(opts)
 
   for (var key in asset) {
     this[key] = asset[key]
@@ -42,7 +39,7 @@ Asset.prototype.addPath = function addAssetPath (path) {
     path: path
   }
 
-  xml.addPath(opts)
+  this.writer.addPath(opts)
 
   return this
 }
@@ -53,7 +50,7 @@ Asset.prototype.addPath = function addAssetPath (path) {
     path: path
   }
 
-  xml.addPath(opts)
+  this.writer.addPath(opts)
 
   return this
 }
@@ -85,7 +82,7 @@ Asset.prototype.createLink = function createAssetLink (opts) {
     opts.type = undefined
   }
 
-  xml.createLink(opts)
+  this.writer.createLink(opts)
 
   return this
 }
@@ -97,7 +94,7 @@ Asset.prototype.setAttribute = function setAssetAttribute (key, value) {
     assetId: this.id
   }
 
-  xml.setAttribute(opts)
+  this.writer.setAttribute(opts)
 
   return this
 }
@@ -115,13 +112,9 @@ Asset.prototype.setPermission = function setAssetPermission (opts) {
     opts.assetId = this.id
   }
 
-  xml.setAttribute(opts)
+  this.writer.setAttribute(opts)
 
   return this
-}
-
-Asset.prototype.toString = function toString (opts) {
-  return xml.toString(opts)
 }
 
 module.exports = Asset

@@ -1,30 +1,17 @@
-var actions = require('./actions');
-var assets = require('./assets');
+var Asset = require('./asset')
 
-function Parser(input) {
-  if (!(this instanceof Parser)) return Parser(input);
-  this.actions = {
-    createAssets: [],
-    setAttributes: [],
-    createLinks: [],
-    setPermissions: []
-  };
-
-  if (typeof input !== 'object') throw new Error('Parser expects object as input');
+function Zion (Writer) {
+  this.writer = Writer({ sortActions: true })
 }
 
-Parser.prototype.toXML = function toXML() {
-  return '<actions>' + Object.keys(this.actions).map(function getActions(action) {
-    return this.actions[action].map(function actionToXML(action) {
-      return action.toXML();
-    }).join('');
-  }, this).join('') + '</actions>';
-};
+Zion.prototype.createAsset = function createAsset (type, opts, context) {
+  var asset = Asset(type, opts, context)
 
-module.exports = function zi() {
-  return {
-    parse: function parse(input) {
-      return new Parser(input);
-    }
-  };
-};
+  return asset.call(this)
+}
+
+module.exports = function zion (Writer) {
+  Writer = Writer || require('node-matrix-importer')
+
+  return new Zion(Writer)
+}
