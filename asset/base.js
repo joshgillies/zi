@@ -24,10 +24,12 @@ function Asset (type, opts, context) {
   opts.parentId = opts.parentId || '1'
   opts.type = opts.type || type
 
-  var asset = this.writer.createAsset(opts)
+  if (opts.type) {
+    var asset = this.writer.createAsset(opts)
 
-  for (var key in asset) {
-    this[key] = asset[key]
+    for (var key in asset) {
+      this[key] = asset[key]
+    }
   }
 
   context.call(this, this)
@@ -53,23 +55,6 @@ Asset.prototype.addPath = function addAssetPath (path) {
   this.writer.addPath(opts)
 
   return this
-}
-
-Asset.prototype.createAsset = function createSubAsset (type, opts, context) {
-  if (typeof opts === 'function') {
-    context = opts
-    opts = undefined
-  }
-
-  if (!opts) {
-    opts = {}
-  }
-
-  if (!opts.parentId) {
-    opts.parentId = this.id
-  }
-
-  return Asset(type, opts, context)
 }
 
 Asset.prototype.createLink = function createAssetLink (opts) {
