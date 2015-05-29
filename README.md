@@ -1,12 +1,12 @@
-# Zion (zi)
+# Zion 
 
 An import/export utility for Squiz Matrix.
 
-[![Build Status](https://travis-ci.org/joshgillies/zi.svg)](https://travis-ci.org/joshgillies/zi)
+[![Build Status](https://travis-ci.org/joshgillies/zion.svg)](https://travis-ci.org/joshgillies/zi)
 
 ## Motivation
 
-Zion or Zi for short aims to provide a utility for both generation and optimisation
+Zion aims to provide a utility for both generation and optimisation
 of asset XML manifests as expected by Squiz Matrix' "[Import Assets from XML Tool]".
 
 Currently the only way of generating an import.xml is either by exporting an
