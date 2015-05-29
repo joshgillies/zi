@@ -1,53 +1,47 @@
 var Importer = require('node-matrix-importer')
 var Asset = require('./asset')
-var inherits = require('util').inherits
 
 function Zion (writer) {
-  this.writer = writer
-  Asset.call(this)
-}
-
-inherits(Zion, Asset)
-
-Zion.prototype.createAsset = function createAsset (type, opts, context) {
-  if (typeof opts === 'function') {
-    context = opts
-    opts = undefined
+  if (!(this instanceof Zion)) {
+    return new Zion(writer)
   }
 
-  if (!opts) {
-    opts = {}
+  this.writer = writer || Importer({ sortActions: true })
+}
+
+Zion.prototype.createAsset = function createAsset (type, opts, scope) {
+  var asset = Asset(type, opts, scope)
+  var writer = this.writer
+
+  function onAddPath (opts) {
+    writer.addPath(opts)
   }
 
-  if (!opts.parentId) {
-    opts.parentId = this.id
+  function onCreateAsset (asset) {
+    asset.id = writer.createAsset(asset).id
   }
 
-  Asset.call(this, type, opts, context)
+  function onCreateLink (opts) {
+    writer.createLink(opts)
+  }
 
-  return this
+  function onSetAttribute (opts) {
+    writer.setAttribute(opts)
+  }
+
+  function onSetPermission (opts) {
+    writer.setPermission(opts)
+  }
+
+  asset.on('add_path', onAddPath)
+  asset.on('create_asset', onCreateAsset)
+  asset.on('create_link', onCreateLink)
+  asset.on('set_attribute', onSetAttribute)
+  asset.on('set_permission', onSetPermission)
+
+  onCreateAsset(asset)
+
+  return asset
 }
 
-Zion.prototype.createPage = function createPage (name, opts, context) {
-  var page = this.createAsset('page_standard', opts, context)
-
-  page
-    .addPath(name)
-    .setAttribute('name', name)
-    .setAttribute('short_name', name)
-
-  page
-    .createAsset('bodycopy', { link: 'type_2', dependant: '1', exclusive: '1' })
-    .createAsset('bodycopy_div', { link: 'type_2', dependant: '1' })
-    .createAsset('content_type_wysiwyg', { link: 'type_2', dependant: '1', exclusive: '1' })
-}
-
-Zion.prototype.toString = function toString (opts) {
-  return this.writer.toString(opts)
-}
-
-module.exports = function zion (Writer) {
-  Writer = Writer || new Importer({ sortActions: true })
-
-  return new Zion(Writer)
-}
+module.exports = Zion

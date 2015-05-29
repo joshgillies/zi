@@ -1,5 +1,5 @@
 {
-  "name": "zi",
+  "name": "zion",
   "version": "1.0.0",
   "description": "An import utility for Squiz Matrix",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/joshgillies/zi.git"
+    "url": "https://github.com/joshgillies/zion.git"
   },
   "keywords": [
     "squiz",
@@ -21,9 +21,9 @@
   "author": "Josh Gillies <npm@joshgilli.es> (http://joshgilli.es/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/joshgillies/zi/issues"
+    "url": "https://github.com/joshgillies/zion/issues"
   },
-  "homepage": "https://github.com/joshgillies/zi",
+  "homepage": "https://github.com/joshgillies/zion",
   "dependencies": {
     "inherits": "^2.0.1",
     "node-matrix-importer": "^1.0.0"

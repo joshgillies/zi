@@ -1,5 +1,3 @@
-var Asset = require('./')
-
 function createPage (name, opts, context) {
   var page = this.createAsset('page_standard', opts, context)
 

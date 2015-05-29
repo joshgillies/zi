@@ -1,9 +1,9 @@
 var EventEmitter = require('events').EventEmitter
-var inherits = require('util').inherits
+var inherits = require('inherits')
 
-function Asset (type, opts, context) {
+function Asset (type, opts, scope) {
   if (!(this instanceof Asset)) {
-    return new Asset(type, opts, context)
+    return new Asset(type, opts, scope)
   }
 
   EventEmitter.call(this)
@@ -14,7 +14,7 @@ function Asset (type, opts, context) {
   }
 
   if (typeof opts === 'function') {
-    context = opts
+    scope = opts
     opts = undefined
   }
 
@@ -22,18 +22,20 @@ function Asset (type, opts, context) {
     opts = {}
   }
 
-  if (!context) {
-    context = function noop () {}
+  if (!scope) {
+    scope = function noop () {}
   }
 
-  opts.parentId = opts.parentId || '1'
-  opts.type = opts.type || type
-
-  if (opts.type) {
-    this._createAsset(opts)
+  for (var key in opts) {
+    this[key] = opts[key]
   }
 
-  context.call(this, this)
+  this.parentId = this.parentId || '1'
+  this.type = this.type || type
+
+  setImmediate(function stackScope () {
+    scope.call(this, this)
+  }.bind(this))
 }
 
 inherits(Asset, EventEmitter)
@@ -42,8 +44,8 @@ Asset.prototype._addPath = function _addPath (opts) {
   this.emit('add_path', opts)
 }
 
-Asset.prototype._createAsset = function _createAsset (opts) {
-  this.emit('create_asset', opts)
+Asset.prototype._createAsset = function _createAsset (asset) {
+  this.emit('create_asset', asset)
 }
 
 Asset.prototype._createLink = function _createLink (opts) {
@@ -69,9 +71,9 @@ Asset.prototype.addPath = function addAssetPath (path) {
   return this
 }
 
-Asset.prototype.createAsset = function createAsset (type, opts, context) {
+Asset.prototype.createAsset = function createAsset (type, opts, scope) {
   if (typeof opts === 'function') {
-    context = opts
+    scope = opts
     opts = undefined
   }
 
@@ -83,22 +85,17 @@ Asset.prototype.createAsset = function createAsset (type, opts, context) {
     opts.parentId = this.id
   }
 
-  var asset = Asset(type, opts, context)
-  this.listeners('add_path').forEach(function (listener) {
-    asset.on('add_path', listener)
-  })
-  this.listeners('create_asset').forEach(function (listener) {
-    asset.on('create_asset', listener)
-  })
-  this.listeners('create_link').forEach(function (listener) {
-    asset.on('create_link', listener)
-  })
-  this.listeners('set_attribute').forEach(function (listener) {
-    asset.on('set_attribute', listener)
-  })
-  this.listeners('set_perission').forEach(function (listener) {
-    asset.on('set_perission', listener)
-  })
+  var asset = Asset(type, opts, scope)
+  var events = ['add_path', 'create_asset', 'create_link', 'set_attribute', 'set_perission']
+
+  for (var i = 0; i < events.length; i++) {
+    this.listeners(events[i]).forEach(function (listener) {
+      asset.on(events[i], listener)
+    })
+  }
+
+  this._createAsset(asset)
+
   return asset
 }
 Asset.prototype.createLink = function createAssetLink (opts) {
