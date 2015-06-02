@@ -32,6 +32,7 @@ function Asset (type, opts, scope) {
 
   this.parentId = this.parentId || '1'
   this.type = this.type || type
+  this.attributes = {}
 
   setImmediate(function stackScope () {
     scope.call(this, this)
@@ -120,6 +121,7 @@ Asset.prototype.setAttribute = function setAssetAttribute (key, value) {
     assetId: this.id
   }
 
+  this.attributes[opts.attribute] = opts.value
   this._setAttribute(opts)
 
   return this
