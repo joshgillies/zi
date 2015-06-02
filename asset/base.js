@@ -33,6 +33,7 @@ function Asset (type, opts, scope) {
   this.parentId = this.parentId || '1'
   this.type = this.type || type
   this.attributes = {}
+  this.children = []
 
   setImmediate(function stackScope () {
     scope.call(this, this)
@@ -93,6 +94,10 @@ Asset.prototype.createAsset = function createAsset (type, opts, scope) {
     this.listeners(events[i]).forEach(function (listener) {
       asset.on(events[i], listener)
     })
+  }
+
+  if (this.id === asset.parentId) {
+    this.children.push(asset)
   }
 
   this._createAsset(asset)
