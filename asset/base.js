@@ -68,6 +68,7 @@ Asset.prototype.addPath = function addAssetPath (path) {
     path: path
   }
 
+  this.path = opts.path
   this._addPath(opts)
 
   return this
@@ -104,6 +105,7 @@ Asset.prototype.createAsset = function createAsset (type, opts, scope) {
 
   return asset
 }
+
 Asset.prototype.createLink = function createAssetLink (opts) {
   if (!opts.from) {
     opts.from = this.id
@@ -114,6 +116,7 @@ Asset.prototype.createLink = function createAssetLink (opts) {
     opts.type = undefined
   }
 
+  this.link = opts.link
   this._createLink(opts)
 
   return this

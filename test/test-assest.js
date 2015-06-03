@@ -12,6 +12,7 @@ test('Base Asset definition', function (assert) {
   asset.on('add_path', function (obj) {
     assert.ok(true, 'add path event fired')
     assert.equal(obj.path, 'test')
+    assert.equal(asset.path, 'test')
   })
 
   asset.on('create_asset', function (asset) {
@@ -21,7 +22,8 @@ test('Base Asset definition', function (assert) {
 
   asset.on('create_link', function (obj) {
     assert.ok(true, 'create link event fired')
-    assert.equal(obj.link, 'type_2')
+    assert.equal(obj.link, 'notice')
+    assert.equal(asset.link, 'notice')
   })
 
   asset.on('set_attribute', function (obj) {
@@ -40,9 +42,10 @@ test('Base Asset definition', function (assert) {
     assert.equal(obj.granted, true)
   })
 
+  assert.equal(asset.link, 'type_2')
   assert.deepEqual(asset.createAsset('test_asset', { type: 'type_2' }), childAsset)
   asset.addPath('test')
-  asset.createLink({ type: 'type_2' })
+  asset.createLink({ type: 'notice' })
   asset.setAttribute('test', 'testing')
   asset.setPermission({ permission: 'read', granted: true })
 
