@@ -3,6 +3,7 @@ var test = require('tape')
 
 test('Base Asset definition', function (assert) {
   var asset = Asset('page_standard', { link: 'type_2' }, function (page) {
+    assert.deepEqual(this, page)
     assert.deepEqual(asset, this)
     assert.deepEqual(asset, page)
   })
@@ -13,12 +14,9 @@ test('Base Asset definition', function (assert) {
     assert.equal(obj.path, 'test')
   })
 
-  asset.on('create_asset', function (child) {
+  asset.on('create_asset', function (asset) {
     assert.ok(true, 'create asset event fired')
-    // assignment happens after the event is fired... is this even worth testing?
-    process.nextTick(function () {
-      assert.deepEqual(child, childAsset)
-    })
+    childAsset = asset
   })
 
   asset.on('create_link', function (obj) {
@@ -27,9 +25,13 @@ test('Base Asset definition', function (assert) {
   })
 
   asset.on('set_attribute', function (obj) {
+    var expected = {}
+    expected[obj.attribute] = obj.value
+
     assert.ok(true, 'set attribute event fired')
     assert.equal(obj.attribute, 'test')
     assert.equal(obj.value, 'testing')
+    assert.deepEqual(asset.attributes, expected)
   })
 
   asset.on('set_permission', function (obj) {
@@ -38,7 +40,7 @@ test('Base Asset definition', function (assert) {
     assert.equal(obj.granted, true)
   })
 
-  childAsset = asset.createAsset('test_asset', { type: 'type_2' })
+  assert.deepEqual(asset.createAsset('test_asset', { type: 'type_2' }), childAsset)
   asset.addPath('test')
   asset.createLink({ type: 'type_2' })
   asset.setAttribute('test', 'testing')
