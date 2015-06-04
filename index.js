@@ -9,7 +9,7 @@ function Zion (writer) {
   this.writer = writer || Importer({ sortActions: true })
 }
 
-Zion.prototype.createAsset = function createAsset (type, opts, scope) {
+Zion.prototype.createBundle = function createBundle (type, opts, scope) {
   var asset = Asset(type, opts, scope)
   var writer = this.writer
 
