@@ -9,6 +9,14 @@ An import/export utility for Squiz Matrix.
 
 ### Zion(writer)
 
+The `zion` constructor takes a single argument `writer`.
+Where `writer` is a mechanism for producing input compatible with Squiz Matrix.
+If it is not set, [node-matrix-importer] will be used as the default.
+
+The original `writer` object is exposed via `zion.writer` for later use.
+
+[node-matrix-importer]: https://github.com/joshgillies/node-matrix-importer
+
 #### zion.createBundle(type, opts, scope)
 
 ### Asset(type, opts, scope)
