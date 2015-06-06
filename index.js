@@ -12,34 +12,32 @@ function Zion (writer) {
 Zion.prototype.createBundle = function createBundle (type, opts, scope) {
   var asset = Asset(type, opts, scope)
   var writer = this.writer
-
-  function onAddPath (opts) {
-    writer.addPath(opts)
+  var events = {
+    'add_path': function onAddPath (opts) {
+      writer.addPath(opts)
+    },
+    'create_asset': function onCreateAsset (asset) {
+      asset.id = writer.createAsset(asset).id
+      bindListeners(asset, events)
+    },
+    'create_link': function onCreateLink (opts) {
+      writer.createLink(opts)
+    },
+    'set_attribute': function onSetAttribute (opts) {
+      writer.setAttribute(opts)
+    },
+    'set_perission': function onSetPermission (opts) {
+      writer.setPermission(opts)
+    }
   }
 
-  function onCreateAsset (asset) {
-    asset.id = writer.createAsset(asset).id
+  function bindListeners (emitter, events) {
+    for (var event in events) {
+      emitter.on(event, events[event])
+    }
   }
 
-  function onCreateLink (opts) {
-    writer.createLink(opts)
-  }
-
-  function onSetAttribute (opts) {
-    writer.setAttribute(opts)
-  }
-
-  function onSetPermission (opts) {
-    writer.setPermission(opts)
-  }
-
-  asset.on('add_path', onAddPath)
-  asset.on('create_asset', onCreateAsset)
-  asset.on('create_link', onCreateLink)
-  asset.on('set_attribute', onSetAttribute)
-  asset.on('set_permission', onSetPermission)
-
-  onCreateAsset(asset)
+  events['create_asset'](asset)
 
   return asset
 }

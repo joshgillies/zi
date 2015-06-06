@@ -89,13 +89,6 @@ Asset.prototype.createAsset = function createAsset (type, opts, scope) {
   }
 
   var asset = Asset(type, opts, scope)
-  var events = ['add_path', 'create_asset', 'create_link', 'set_attribute', 'set_perission']
-
-  for (var i = 0; i < events.length; i++) {
-    this.listeners(events[i]).forEach(function (listener) {
-      asset.on(events[i], listener)
-    })
-  }
 
   if (this.id === asset.parentId) {
     this.children.push(asset)
