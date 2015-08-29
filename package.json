@@ -26,10 +26,11 @@
   "homepage": "https://github.com/joshgillies/zion",
   "dependencies": {
     "inherits": "^2.0.1",
+    "node-matrix-bundler": "^1.0.0",
     "node-matrix-importer": "^1.1.1"
   },
   "devDependencies": {
-    "standard": "^5.0.2",
-    "tape": "^4.0.3"
+    "standard": "^5.1.1",
+    "tape": "^4.2.0"
   }
 }
